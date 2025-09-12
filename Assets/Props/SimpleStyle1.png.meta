@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: pipe1
+      name: pipe_middle
       rect:
         serializedVersion: 2
-        x: 0
-        y: 32
-        width: 32
-        height: 80
+        x: 2
+        y: 51
+        width: 28
+        height: 42
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -231,7 +231,7 @@ TextureImporter:
         width: 64
         height: 31
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -240,6 +240,50 @@ TextureImporter:
       bones: []
       spriteID: 1906e2f13b5fcdd4281daedcb6e64298
       internalID: 683593583
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pipe_head1
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 96
+        width: 32
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0918edcd6083c354ab22aa0d0762bc0c
+      internalID: -1031309596
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pipe_head2
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 32
+        width: 32
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 261edbc685733494db2e34a7bbc6f262
+      internalID: 2026761696
       vertices: []
       indices: 
       edges: []
@@ -258,10 +302,12 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      pipe1: 9135437276427009489
       pipe2: -959802160
       pipe3: -1168030047
       pipe4: -1393492802
+      pipe_head1: -1031309596
+      pipe_head2: 2026761696
+      pipe_middle: 9135437276427009489
       tile1: 816801707
       tile2: 683593583
   mipmapLimitGroupName: 
