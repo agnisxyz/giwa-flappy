@@ -1,24 +1,31 @@
 using UnityEngine;
-using TMPro; // TextMeshPro kullanacağımız için gerekli
+using TMPro;
 
 public class ScoreManager : MonoBehaviour
 {
-    public static ScoreManager Instance; // Diğer scriptlerden erişmek için
+    public static ScoreManager Instance;
 
     [SerializeField] private TextMeshProUGUI _scoreText;
-    private int _score = 0;
+    private int _currentScore = 0;
 
     private void Awake()
     {
-        // Singleton yapısı: Her yerden ScoreManager.Instance diyerek ulaşabilirsin
         if (Instance == null) Instance = this;
     }
 
     public void AddScore()
     {
-        _score++;
-        _scoreText.text = _score.ToString();
+        _currentScore++;
+        _scoreText.text = _currentScore.ToString();
+    }
 
-        // Buraya istersen skor artınca çalacak bir "point" sesi ekleyebilirsin
+    public void SaveHighScore()
+    {
+        int savedHighScore = PlayerPrefs.GetInt("HighScore", 0);
+        if (_currentScore > savedHighScore)
+        {
+            PlayerPrefs.SetInt("HighScore", _currentScore);
+            PlayerPrefs.Save(); // Veriyi diske kesin olarak yazar
+        }
     }
 }
