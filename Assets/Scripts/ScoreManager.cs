@@ -6,6 +6,7 @@ public class ScoreManager : MonoBehaviour
     public static ScoreManager Instance;
 
     [SerializeField] private TextMeshProUGUI _scoreText;
+
     private int _currentScore = 0;
 
     private void Awake()
@@ -17,6 +18,8 @@ public class ScoreManager : MonoBehaviour
     {
         _currentScore++;
         _scoreText.text = _currentScore.ToString();
+
+        AudioManager.Instance.PlaySFX(AudioManager.Instance.CoinSound);
     }
 
     public void SaveHighScore()

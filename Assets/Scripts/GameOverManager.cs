@@ -13,10 +13,12 @@ public class GameOverManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _countdownText;
     [SerializeField] private TextMeshProUGUI _highScoreText;
 
+    [Header("In-Game UI")]
+    [SerializeField] private GameObject _inGameScoreText;
+
     [Header("Game Objects")]
     [SerializeField] private GameObject _playerObject;
 
-    // Static bool to check if we are coming from a retry
     private static bool _shouldStartImmediately = false;
 
     private void Awake()
@@ -26,21 +28,22 @@ public class GameOverManager : MonoBehaviour
 
     private void Start()
     {
+        // Physics and UI reset
         Time.timeScale = 0;
 
         _gameOverPanel.SetActive(false);
         _countdownText.gameObject.SetActive(false);
+        _inGameScoreText.SetActive(false);
 
         if (_shouldStartImmediately)
         {
-            // If retrying, skip menu and start countdown
-            _shouldStartImmediately = false; // Reset for next time
+            _shouldStartImmediately = false;
             _mainMenuPanel.SetActive(false);
+            if (_playerObject != null) _playerObject.SetActive(true);
             StartCoroutine(CountdownRoutine());
         }
         else
         {
-            // First entry, show menu
             _mainMenuPanel.SetActive(true);
             if (_playerObject != null) _playerObject.SetActive(false);
         }
@@ -56,15 +59,16 @@ public class GameOverManager : MonoBehaviour
 
     private IEnumerator CountdownRoutine()
     {
-        if (_playerObject != null) _playerObject.SetActive(true);
-
-        // Reset player position and status before countdown
-        BirdMovement movement = _playerObject.GetComponent<BirdMovement>();
-        if (movement != null)
+        if (_playerObject != null)
         {
-            movement.IsAlive = true;
-            _playerObject.transform.position = Vector3.zero;
-            _playerObject.GetComponent<Rigidbody2D>().linearVelocity = Vector2.zero;
+            _playerObject.SetActive(true);
+            BirdMovement movement = _playerObject.GetComponent<BirdMovement>();
+            if (movement != null)
+            {
+                movement.IsAlive = true;
+                _playerObject.transform.position = Vector3.zero;
+                _playerObject.GetComponent<Rigidbody2D>().linearVelocity = Vector2.zero;
+            }
         }
 
         _countdownText.gameObject.SetActive(true);
@@ -81,19 +85,36 @@ public class GameOverManager : MonoBehaviour
         yield return new WaitForSecondsRealtime(0.5f);
         _countdownText.gameObject.SetActive(false);
 
+        _inGameScoreText.SetActive(true);
         Time.timeScale = 1;
     }
 
     public void TriggerGameOver()
     {
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlaySFX(AudioManager.Instance.DeathSound);
+        }
+
+        if (ScoreManager.Instance != null)
+            ScoreManager.Instance.SaveHighScore();
+
         Time.timeScale = 0;
-        ScoreManager.Instance.SaveHighScore(); // Save before showing panel
+
+        _inGameScoreText.SetActive(false);
         _gameOverPanel.SetActive(true);
     }
 
     public void RestartGame()
     {
-        _shouldStartImmediately = true; // Set flag to skip menu
+        _shouldStartImmediately = true;
+        Time.timeScale = 1;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public void LoadMainMenu()
+    {
+        _shouldStartImmediately = false;
         Time.timeScale = 1;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }

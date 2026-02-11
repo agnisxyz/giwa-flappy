@@ -8,6 +8,7 @@ public class BirdMovement : MonoBehaviour
     [SerializeField] private float _flapStrength = 7f;
     [SerializeField] private float _rotationSpeed = 2.5f;
 
+
     void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
@@ -30,6 +31,8 @@ public class BirdMovement : MonoBehaviour
         if (Input.GetMouseButtonDown(0) && IsAlive)
         {
             _rb.linearVelocity = Vector2.up * _flapStrength;
+            // Play the flap sound
+            AudioManager.Instance.PlaySFX(AudioManager.Instance.FlapSound);
         }
     }
 
