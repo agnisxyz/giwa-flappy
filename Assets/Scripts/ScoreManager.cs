@@ -7,7 +7,7 @@ public class ScoreManager : MonoBehaviour
 
     [SerializeField] private TextMeshProUGUI _scoreText;
 
-    private int _currentScore = 0;
+    private int currentScore = 0;
 
     private void Awake()
     {
@@ -16,8 +16,8 @@ public class ScoreManager : MonoBehaviour
 
     public void AddScore()
     {
-        _currentScore++;
-        _scoreText.text = _currentScore.ToString();
+        currentScore++;
+        _scoreText.text = currentScore.ToString();
 
         AudioManager.Instance.PlaySFX(AudioManager.Instance.CoinSound);
     }
@@ -25,10 +25,15 @@ public class ScoreManager : MonoBehaviour
     public void SaveHighScore()
     {
         int savedHighScore = PlayerPrefs.GetInt("HighScore", 0);
-        if (_currentScore > savedHighScore)
+        if (currentScore > savedHighScore)
         {
-            PlayerPrefs.SetInt("HighScore", _currentScore);
+            PlayerPrefs.SetInt("HighScore", currentScore);
             PlayerPrefs.Save(); // Veriyi diske kesin olarak yazar
         }
+    }
+
+    public int GetCurrentScore()
+    {
+        return currentScore;
     }
 }

@@ -12,6 +12,7 @@ public class GameOverManager : MonoBehaviour
     [SerializeField] private GameObject _gameOverPanel;
     [SerializeField] private TextMeshProUGUI _countdownText;
     [SerializeField] private TextMeshProUGUI _highScoreText;
+    [SerializeField] private TextMeshProUGUI currentScoreText;
 
     [Header("In-Game UI")]
     [SerializeField] private GameObject _inGameScoreText;
@@ -98,6 +99,11 @@ public class GameOverManager : MonoBehaviour
 
         if (ScoreManager.Instance != null)
             ScoreManager.Instance.SaveHighScore();
+
+        if (currentScoreText != null)
+        {
+            currentScoreText.text = "Score: " + ScoreManager.Instance.GetCurrentScore();
+        }
 
         Time.timeScale = 0;
 

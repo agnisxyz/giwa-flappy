@@ -703,7 +703,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &482330257
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -761,7 +761,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -16, y: 39}
+  m_AnchoredPosition: {x: -0, y: -11}
   m_SizeDelta: {x: -204.7385, y: -678.0673}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &532465913
@@ -1311,7 +1311,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &772256436
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2615,6 +2615,7 @@ MonoBehaviour:
   _gameOverPanel: {fileID: 482330256}
   _countdownText: {fileID: 539997469}
   _highScoreText: {fileID: 1321805335}
+  currentScoreText: {fileID: 0}
   _inGameScoreText: {fileID: 557454174}
   _playerObject: {fileID: 1042588968}
 --- !u!4 &1691403894
