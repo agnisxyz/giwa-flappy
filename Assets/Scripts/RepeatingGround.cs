@@ -15,12 +15,15 @@ public partial class RepeatingGround : MonoBehaviour
         // Sprite'ın tam genişliğini Renderer bileşeninden alıyoruz
         _width = GetComponentInChildren<Renderer>().bounds.size.x;
         _mainCamera = Camera.main;
+
     }
 
     void Update()
     {
-        // Obje sürekli sola hareket eder
-        transform.position += Vector3.left * _speed * Time.deltaTime;
+        if (BirdMovement.Instance != null && BirdMovement.Instance.IsAlive)
+        {
+            transform.position += Vector3.left * _speed * Time.unscaledDeltaTime;
+        }
 
         // Kameranın sol sınırını dünya koordinatlarında hesapla
         float cameraLeftEdge = _mainCamera.ViewportToWorldPoint(new Vector3(0, 0, 0)).x;

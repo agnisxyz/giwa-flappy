@@ -2,23 +2,31 @@ using UnityEngine;
 
 public class BirdMovement : MonoBehaviour
 {
+    // HATA ÇÖZÜMÜ: Bu satırı ekleyerek 'Instance' ismini tanımlıyoruz
+    public static BirdMovement Instance;
+
     private Rigidbody2D _rb;
     public bool IsAlive = true;
 
     [SerializeField] private float _flapStrength = 7f;
     [SerializeField] private float _rotationSpeed = 2.5f;
 
-
     void Awake()
     {
+        // HATA ÇÖZÜMÜ: Artık 'Instance' ismi yukarıda tanımlı olduğu için bu satır çalışacaktır
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+
         _rb = GetComponent<Rigidbody2D>();
     }
 
-    // This function will be called by GameOverManager to reset the bird
+    // Geri kalan kodlar aynı kalabilir...
     public void ResetBird()
     {
         IsAlive = true;
-        transform.position = Vector3.zero; // Moves bird to center
+        transform.position = Vector3.zero;
         transform.rotation = Quaternion.identity;
         _rb.linearVelocity = Vector2.zero;
         _rb.simulated = true;
@@ -31,8 +39,8 @@ public class BirdMovement : MonoBehaviour
         if (Input.GetMouseButtonDown(0) && IsAlive)
         {
             _rb.linearVelocity = Vector2.up * _flapStrength;
-            // Play the flap sound
-            AudioManager.Instance.PlaySFX(AudioManager.Instance.FlapSound);
+            if (AudioManager.Instance != null)
+                AudioManager.Instance.PlaySFX(AudioManager.Instance.FlapSound);
         }
     }
 
