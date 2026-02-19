@@ -13,7 +13,7 @@ public class BirdMovement : MonoBehaviour
 
     void Awake()
     {
-        // HATA ÇÖZÜMÜ: Artık 'Instance' ismi yukarıda tanımlı olduğu için bu satır çalışacaktır
+
         if (Instance == null)
         {
             Instance = this;
@@ -22,7 +22,7 @@ public class BirdMovement : MonoBehaviour
         _rb = GetComponent<Rigidbody2D>();
     }
 
-    // Geri kalan kodlar aynı kalabilir...
+
     public void ResetBird()
     {
         IsAlive = true;
