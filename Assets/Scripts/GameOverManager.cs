@@ -7,7 +7,7 @@ public class GameOverManager : MonoBehaviour
 {
     public static GameOverManager Instance;
 
-    [Header("Panels")]
+    [Header("UI Panels")]
     [SerializeField] private GameObject _mainMenuPanel;
     [SerializeField] private GameObject _gameOverPanel;
     [SerializeField] private GameObject _inGameScoreText;
@@ -72,8 +72,6 @@ public class GameOverManager : MonoBehaviour
         yield return new WaitForSecondsRealtime(0.5f);
         _countdownText.gameObject.SetActive(false);
         _inGameScoreText.SetActive(true);
-
-        // ZAMANI BAŞLAT: Kuş kodu bunu algılayıp zıplamaya izin verecek
         Time.timeScale = 1;
     }
 
@@ -82,7 +80,9 @@ public class GameOverManager : MonoBehaviour
         if (AudioManager.Instance != null) AudioManager.Instance.PlaySFX(AudioManager.Instance.DeathSound);
 
         int currentScore = ScoreManager.Instance.GetCurrentScore();
-        _finalScoreText.text = "SCORE: " + currentScore.ToString();
+
+        // --- DÜZELTME BURADA: Sadece sayı yazması için "SCORE: " kısmını sildik ---
+        _finalScoreText.text = currentScore.ToString();
 
         int savedHigh = PlayerPrefs.GetInt("HighScore", 0);
         if (currentScore > savedHigh)
@@ -92,9 +92,28 @@ public class GameOverManager : MonoBehaviour
         }
         UpdateHighScoreDisplay();
 
-        Time.timeScale = 0; // Burada zaman durunca kuşun yaylanması "IsAlive = false" olduğu için çalışmayacak
+        Time.timeScale = 0;
         _inGameScoreText.SetActive(false);
+
+        // PANEL ANİMASYONU BAŞLIYOR
         _gameOverPanel.SetActive(true);
+        _gameOverPanel.transform.localScale = Vector3.zero; // Önce sıfır yap
+        StartCoroutine(AnimatePanel()); // Büyüterek getir
+    }
+
+    private IEnumerator AnimatePanel()
+    {
+        float timer = 0;
+        float duration = 0.25f; // Animasyon süresi (saniye)
+
+        while (timer < duration)
+        {
+            timer += Time.unscaledDeltaTime;
+            // Lerp ile yumuşak büyüme
+            _gameOverPanel.transform.localScale = Vector3.one * Mathf.Lerp(0, 1, timer / duration);
+            yield return null;
+        }
+        _gameOverPanel.transform.localScale = Vector3.one;
     }
 
     private void UpdateHighScoreDisplay()
