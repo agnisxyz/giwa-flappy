@@ -7,15 +7,15 @@ public class GameOverManager : MonoBehaviour
 {
     public static GameOverManager Instance;
 
-    [Header("UI Panels")]
+    [Header("Panels")]
     [SerializeField] private GameObject _mainMenuPanel;
     [SerializeField] private GameObject _gameOverPanel;
-    [SerializeField] private TextMeshProUGUI _countdownText;
-    [SerializeField] private TextMeshProUGUI _highScoreText;
-    [SerializeField] private TextMeshProUGUI currentScoreText;
-
-    [Header("In-Game UI")]
     [SerializeField] private GameObject _inGameScoreText;
+
+    [Header("Texts")]
+    [SerializeField] private TextMeshProUGUI _finalScoreText;
+    [SerializeField] private TextMeshProUGUI _highScoreText;
+    [SerializeField] private TextMeshProUGUI _countdownText;
 
     [Header("Game Objects")]
     [SerializeField] private GameObject _playerObject;
@@ -29,12 +29,11 @@ public class GameOverManager : MonoBehaviour
 
     private void Start()
     {
-        // Physics and UI reset
         Time.timeScale = 0;
-
         _gameOverPanel.SetActive(false);
         _countdownText.gameObject.SetActive(false);
         _inGameScoreText.SetActive(false);
+        UpdateHighScoreDisplay();
 
         if (_shouldStartImmediately)
         {
@@ -48,8 +47,6 @@ public class GameOverManager : MonoBehaviour
             _mainMenuPanel.SetActive(true);
             if (_playerObject != null) _playerObject.SetActive(false);
         }
-
-        ShowHighScore();
     }
 
     public void StartGameButton()
@@ -60,18 +57,7 @@ public class GameOverManager : MonoBehaviour
 
     private IEnumerator CountdownRoutine()
     {
-        if (_playerObject != null)
-        {
-            _playerObject.SetActive(true);
-            BirdMovement movement = _playerObject.GetComponent<BirdMovement>();
-            if (movement != null)
-            {
-                movement.IsAlive = true;
-                _playerObject.transform.position = Vector3.zero;
-                _playerObject.GetComponent<Rigidbody2D>().linearVelocity = Vector2.zero;
-            }
-        }
-
+        if (_playerObject != null) _playerObject.SetActive(true);
         _countdownText.gameObject.SetActive(true);
         int count = 3;
 
@@ -85,30 +71,39 @@ public class GameOverManager : MonoBehaviour
         _countdownText.text = "GO!";
         yield return new WaitForSecondsRealtime(0.5f);
         _countdownText.gameObject.SetActive(false);
-
         _inGameScoreText.SetActive(true);
+
+        // ZAMANI BAŞLAT: Kuş kodu bunu algılayıp zıplamaya izin verecek
         Time.timeScale = 1;
     }
 
     public void TriggerGameOver()
     {
-        if (AudioManager.Instance != null)
+        if (AudioManager.Instance != null) AudioManager.Instance.PlaySFX(AudioManager.Instance.DeathSound);
+
+        int currentScore = ScoreManager.Instance.GetCurrentScore();
+        _finalScoreText.text = "SCORE: " + currentScore.ToString();
+
+        int savedHigh = PlayerPrefs.GetInt("HighScore", 0);
+        if (currentScore > savedHigh)
         {
-            AudioManager.Instance.PlaySFX(AudioManager.Instance.DeathSound);
+            PlayerPrefs.SetInt("HighScore", currentScore);
+            PlayerPrefs.Save();
         }
+        UpdateHighScoreDisplay();
 
-        if (ScoreManager.Instance != null)
-            ScoreManager.Instance.SaveHighScore();
-
-        if (currentScoreText != null)
-        {
-            currentScoreText.text = "Score: " + ScoreManager.Instance.GetCurrentScore();
-        }
-
-        Time.timeScale = 0;
-
+        Time.timeScale = 0; // Burada zaman durunca kuşun yaylanması "IsAlive = false" olduğu için çalışmayacak
         _inGameScoreText.SetActive(false);
         _gameOverPanel.SetActive(true);
+    }
+
+    private void UpdateHighScoreDisplay()
+    {
+        if (_highScoreText != null)
+        {
+            int high = PlayerPrefs.GetInt("HighScore", 0);
+            _highScoreText.text = "BEST: " + high.ToString();
+        }
     }
 
     public void RestartGame()
@@ -123,14 +118,5 @@ public class GameOverManager : MonoBehaviour
         _shouldStartImmediately = false;
         Time.timeScale = 1;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-    }
-
-    private void ShowHighScore()
-    {
-        if (_highScoreText != null)
-        {
-            int highScore = PlayerPrefs.GetInt("HighScore", 0);
-            _highScoreText.text = "High Score: " + highScore.ToString();
-        }
     }
 }

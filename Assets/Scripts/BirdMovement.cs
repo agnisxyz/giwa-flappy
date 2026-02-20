@@ -2,51 +2,57 @@ using UnityEngine;
 
 public class BirdMovement : MonoBehaviour
 {
-    // HATA ÇÖZÜMÜ: Bu satırı ekleyerek 'Instance' ismini tanımlıyoruz
     public static BirdMovement Instance;
 
     private Rigidbody2D _rb;
     public bool IsAlive = true;
 
+    [Header("Movement Settings")]
     [SerializeField] private float _flapStrength = 7f;
     [SerializeField] private float _rotationSpeed = 2.5f;
+    [SerializeField] private float _upperBoundary = 4.5f;
 
     void Awake()
     {
-
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-
+        if (Instance == null) Instance = this;
         _rb = GetComponent<Rigidbody2D>();
-    }
-
-
-    public void ResetBird()
-    {
-        IsAlive = true;
-        transform.position = Vector3.zero;
-        transform.rotation = Quaternion.identity;
-        _rb.linearVelocity = Vector2.zero;
-        _rb.simulated = true;
     }
 
     void Update()
     {
-        if (Time.timeScale == 0) return;
-
-        if (Input.GetMouseButtonDown(0) && IsAlive)
+        // 1. ANA MENÜ DURUMU: Oyun duruyorken ve kuş hayattayken süzül
+        if (Time.timeScale == 0 && IsAlive)
         {
-            _rb.linearVelocity = Vector2.up * _flapStrength;
-            if (AudioManager.Instance != null)
-                AudioManager.Instance.PlaySFX(AudioManager.Instance.FlapSound);
+            float yOffset = Mathf.Sin(Time.unscaledTime * 4f) * 0.15f;
+            transform.position = new Vector3(0, yOffset, 0);
+            return;
         }
+
+        // 2. OYUN DURUMU: Kuş hayattaysa ve zaman akıyorsa zıpla
+        if (IsAlive && Time.timeScale > 0)
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                _rb.linearVelocity = Vector2.up * _flapStrength;
+                if (AudioManager.Instance != null)
+                    AudioManager.Instance.PlaySFX(AudioManager.Instance.FlapSound);
+            }
+
+            // Üst sınır kontrolü
+            if (transform.position.y > _upperBoundary)
+            {
+                transform.position = new Vector3(transform.position.x, _upperBoundary, transform.position.z);
+                _rb.linearVelocity = Vector2.zero;
+            }
+        }
+
+        // 3. ÖLÜM DURUMU: IsAlive false olduğu an yukarıdaki hiçbir kod çalışmaz, 
+        // ne yaylanma yapılır ne de zıplanır.
     }
 
     void FixedUpdate()
     {
-        if (IsAlive)
+        if (IsAlive && Time.timeScale > 0)
         {
             transform.rotation = Quaternion.Euler(0, 0, _rb.linearVelocity.y * _rotationSpeed);
         }
@@ -57,10 +63,7 @@ public class BirdMovement : MonoBehaviour
         if (IsAlive)
         {
             IsAlive = false;
-            if (GameOverManager.Instance != null)
-            {
-                GameOverManager.Instance.TriggerGameOver();
-            }
+            GameOverManager.Instance.TriggerGameOver();
         }
     }
 }

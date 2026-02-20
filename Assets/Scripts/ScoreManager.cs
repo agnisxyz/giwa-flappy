@@ -6,34 +6,28 @@ public class ScoreManager : MonoBehaviour
     public static ScoreManager Instance;
 
     [SerializeField] private TextMeshProUGUI _scoreText;
-
-    private int currentScore = 0;
+    private int _currentScore = 0;
 
     private void Awake()
     {
         if (Instance == null) Instance = this;
     }
 
+    // Borudan geçince bu çalışacak
     public void AddScore()
     {
-        currentScore++;
-        _scoreText.text = currentScore.ToString();
+        _currentScore++;
+        _scoreText.text = _currentScore.ToString();
 
-        AudioManager.Instance.PlaySFX(AudioManager.Instance.CoinSound);
-    }
-
-    public void SaveHighScore()
-    {
-        int savedHighScore = PlayerPrefs.GetInt("HighScore", 0);
-        if (currentScore > savedHighScore)
+        // SES BURADA ÇALIYOR
+        if (AudioManager.Instance != null)
         {
-            PlayerPrefs.SetInt("HighScore", currentScore);
-            PlayerPrefs.Save(); // Veriyi diske kesin olarak yazar
+            AudioManager.Instance.PlaySFX(AudioManager.Instance.CoinSound);
         }
     }
 
     public int GetCurrentScore()
     {
-        return currentScore;
+        return _currentScore;
     }
 }
