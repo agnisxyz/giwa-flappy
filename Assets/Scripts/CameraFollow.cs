@@ -5,7 +5,7 @@ public class CameraFollow : MonoBehaviour
     [SerializeField] private Transform _target;  // Kuşun transform’u
     [SerializeField] private float _offsetX = 2f; // Kuşun kameranın biraz önünde görünmesi için
 
-    void Update()
+    void LateUpdate()
     {
         if (_target != null)
         {
