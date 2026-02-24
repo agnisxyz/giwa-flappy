@@ -29,6 +29,9 @@ public class GameOverManager : MonoBehaviour
 
     private void Start()
     {
+        Time.maximumDeltaTime = 0.1f;
+        Application.targetFrameRate = 60;
+
         Time.timeScale = 0;
         _gameOverPanel.SetActive(false);
         _countdownText.gameObject.SetActive(false);
@@ -57,6 +60,11 @@ public class GameOverManager : MonoBehaviour
 
     private IEnumerator CountdownRoutine()
     {
+
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlayMusic(AudioManager.Instance.backgroundMusic);
+        }
         if (_playerObject != null) _playerObject.SetActive(true);
         _countdownText.gameObject.SetActive(true);
         int count = 3;
@@ -77,6 +85,12 @@ public class GameOverManager : MonoBehaviour
 
     public void TriggerGameOver()
     {
+
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.StopMusic();
+        }
+
         if (AudioManager.Instance != null) AudioManager.Instance.PlaySFX(AudioManager.Instance.DeathSound);
 
         int currentScore = ScoreManager.Instance.GetCurrentScore();
@@ -134,6 +148,11 @@ public class GameOverManager : MonoBehaviour
 
     public void LoadMainMenu()
     {
+
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlayMusic(AudioManager.Instance.backgroundMusic);
+        }
         _shouldStartImmediately = false;
         Time.timeScale = 1;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);

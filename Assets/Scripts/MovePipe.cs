@@ -8,7 +8,7 @@ public class MovePipe : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.position += Vector3.left * _speed * Time.deltaTime;
-        //st
+        transform.position += Vector3.left * _speed * Time.unscaledDeltaTime;
+
     }
 }
