@@ -5,8 +5,8 @@ public class AudioManager : MonoBehaviour
     public static AudioManager Instance;
 
     [Header("Audio Sources")]
-    [SerializeField] private AudioSource musicSource; // Müziği çalacak kaynak
-    [SerializeField] private AudioSource sfxSource;   // Efektleri çalacak kaynak
+    [SerializeField] private AudioSource musicSource;
+    [SerializeField] private AudioSource sfxSource;
 
     [Header("Music Clips")]
     public AudioClip backgroundMusic;
@@ -15,15 +15,15 @@ public class AudioManager : MonoBehaviour
     public AudioClip FlapSound;
     public AudioClip CoinSound;
     public AudioClip DeathSound;
-    public AudioClip CountdownBeep; // Birazdan ekleyeceğin geri sayım sesi
-    public AudioClip GoSound;        // Birazdan ekleyeceğin GO sesi
+
+
 
     private void Awake()
     {
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject); // Sahneler arası müzik kesilmesin diye
+            DontDestroyOnLoad(gameObject);
         }
         else
         {
@@ -33,7 +33,7 @@ public class AudioManager : MonoBehaviour
 
     private void Start()
     {
-        // Oyun açıldığında müziği başlat
+
         PlayMusic(backgroundMusic);
     }
 
@@ -42,7 +42,7 @@ public class AudioManager : MonoBehaviour
         if (clip != null)
         {
             musicSource.clip = clip;
-            musicSource.loop = true; // Müziğin sürekli dönmesini sağlar
+            musicSource.loop = true;
             musicSource.Play();
         }
     }

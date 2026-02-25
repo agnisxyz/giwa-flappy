@@ -20,7 +20,7 @@ public class BirdMovement : MonoBehaviour
 
     void Update()
     {
-        // 1. ANA MENÜ DURUMU: Oyun duruyorken ve kuş hayattayken süzül
+
         if (Time.timeScale == 0 && IsAlive)
         {
             float yOffset = Mathf.Sin(Time.unscaledTime * 4f) * 0.15f;
@@ -28,7 +28,7 @@ public class BirdMovement : MonoBehaviour
             return;
         }
 
-        // 2. OYUN DURUMU: Kuş hayattaysa ve zaman akıyorsa zıpla
+
         if (IsAlive && Time.timeScale > 0)
         {
             if (Input.GetMouseButtonDown(0))
@@ -46,8 +46,7 @@ public class BirdMovement : MonoBehaviour
             }
         }
 
-        // 3. ÖLÜM DURUMU: IsAlive false olduğu an yukarıdaki hiçbir kod çalışmaz, 
-        // ne yaylanma yapılır ne de zıplanır.
+
     }
 
     void FixedUpdate()
