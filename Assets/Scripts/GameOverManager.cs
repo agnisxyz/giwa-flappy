@@ -95,7 +95,7 @@ public class GameOverManager : MonoBehaviour
 
         int currentScore = ScoreManager.Instance.GetCurrentScore();
 
-        // --- DÜZELTME BURADA: Sadece sayı yazması için "SCORE: " kısmını sildik ---
+
         _finalScoreText.text = currentScore.ToString();
 
         int savedHigh = PlayerPrefs.GetInt("HighScore", 0);
@@ -109,21 +109,21 @@ public class GameOverManager : MonoBehaviour
         Time.timeScale = 0;
         _inGameScoreText.SetActive(false);
 
-        // PANEL ANİMASYONU BAŞLIYOR
+
         _gameOverPanel.SetActive(true);
-        _gameOverPanel.transform.localScale = Vector3.zero; // Önce sıfır yap
-        StartCoroutine(AnimatePanel()); // Büyüterek getir
+        _gameOverPanel.transform.localScale = Vector3.zero;
+        StartCoroutine(AnimatePanel());
     }
 
     private IEnumerator AnimatePanel()
     {
         float timer = 0;
-        float duration = 0.25f; // Animasyon süresi (saniye)
+        float duration = 0.25f;
 
         while (timer < duration)
         {
             timer += Time.unscaledDeltaTime;
-            // Lerp ile yumuşak büyüme
+
             _gameOverPanel.transform.localScale = Vector3.one * Mathf.Lerp(0, 1, timer / duration);
             yield return null;
         }

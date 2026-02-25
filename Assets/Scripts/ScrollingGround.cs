@@ -2,31 +2,24 @@ using UnityEngine;
 
 public class ScrollingGround : MonoBehaviour
 {
-    [Header("Settings")]
+    [Header("Ayarlar")]
     [SerializeField] private float _speed = 4f;
-
-    private float spriteWidth;
-
-    void Start()
-    {
-
-        spriteWidth = GetComponent<SpriteRenderer>().bounds.size.x;
-    }
+    [SerializeField] private float _width = 20f;
 
     void Update()
     {
 
         if (BirdMovement.Instance != null && BirdMovement.Instance.IsAlive)
         {
-
             transform.position += Vector3.left * _speed * Time.unscaledDeltaTime;
         }
 
 
-        if (transform.position.x <= -spriteWidth)
+        if (transform.position.x <= -_width)
         {
 
-            transform.position += Vector3.right * ((spriteWidth * 2f) - 0.1f);
+            float overlap = 0.1f;
+            transform.position += Vector3.right * ((_width * 3f) - overlap);
         }
     }
 }

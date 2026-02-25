@@ -13,13 +13,13 @@ public class ScoreManager : MonoBehaviour
         if (Instance == null) Instance = this;
     }
 
-    // Borudan geçince bu çalışacak
+
     public void AddScore()
     {
         _currentScore++;
         _scoreText.text = _currentScore.ToString();
 
-        // SES BURADA ÇALIYOR
+
         if (AudioManager.Instance != null)
         {
             AudioManager.Instance.PlaySFX(AudioManager.Instance.CoinSound);
