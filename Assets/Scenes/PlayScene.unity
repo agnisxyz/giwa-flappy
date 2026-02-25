@@ -2191,8 +2191,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99a5382706468b845aa26d8e1beaa77d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ScrollingBackground
-  _speed: 2
-  _width: 37.7
+  speed: 4
+  width: 37.7
 --- !u!1 &1321805333
 GameObject:
   m_ObjectHideFlags: 0
@@ -3391,8 +3391,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99a5382706468b845aa26d8e1beaa77d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ScrollingBackground
-  _speed: 2
-  _width: 37.7
+  speed: 4
+  width: 37.7
 --- !u!1 &2099863793
 GameObject:
   m_ObjectHideFlags: 0
